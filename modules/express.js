@@ -3,6 +3,21 @@ const UserModel = require("../src/models/user.model");
 const app = express();
 app.use(express.json());
 
+// middleware
+app.use((req, res, next) => {
+  console.log(req.body);
+  next();
+});
+
+//views
+app.set("view engine", "ejs");
+app.set("views", "src/views");
+
+app.get("/views/users", async (req, res) => {
+  const users = await UserModel.find({});
+  res.render("index", { users });
+});
+
 app.get("/users", async (req, res) => {
   try {
     const users = await UserModel.find({});
